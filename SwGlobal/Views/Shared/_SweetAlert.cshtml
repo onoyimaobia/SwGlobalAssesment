@@ -1,0 +1,16 @@
+﻿@{
+    var alertData = TempData["alert_data"] as SwGlobal.Notification.Alert;
+}
+<div id="alert-message-holder" style="display:none;">@alertData.AlertMessage</div>
+<div id="alert-status-holder" style="display:none;">@alertData.AlertStatus</div>
+<script>
+    (function ($) {
+        var msg = $('#alert-message-holder').html();
+        var type = $('#alert-status-holder').html();
+        if (type === "danger")
+        {
+            type = "error";
+        }
+            swal('Notification', msg, type);
+    })(jQuery);
+</script>

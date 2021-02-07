@@ -1,0 +1,87 @@
+﻿
+@model SwGlobal.Models.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/Content/bootstrap.css")
+@Styles.Render("~/Content/fonts/font-awesome.css"))
+@Styles.Render("~/Content/login.css")
+@Styles.Render("~/Content/sweetalert.css")
+
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <div class="brand_logo_container">
+                    <img src="~/Image/swglobal.PNG" class="brand_logo" alt="Logo">
+                </div>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "login-form", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-results">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+                    <form>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email address" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            @*<input type="password" name="" class="form-control input_pass" value="" placeholder="password">*@
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                <label class="custom-control-label" for="customControlInline">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" name="button" class="btn login_btn">Login</button>
+                        </div>
+                    </form>
+
+                }
+
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex justify-content-center links">
+                    Don't have an account? <a href="@Url.Action("Register", new {Area = "", Controller = "Account"})" class="ml-2" style="color:white">Sign Up</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
+@Scripts.Render("~/Scripts/sweetalert.js")
+<script>
+    $(function () {
+        $('#login-form').submit(function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                this.submit();
+            }
+        });
+        $('#Email').on('blur', function () {
+            var value = $(this).val();
+            $(this).val(value.trim());
+        });
+    });
+</script>
+@if (TempData.ContainsKey("alert_data"))
+{
+    @Html.Partial("_SweetAlert")
+}
